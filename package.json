@@ -1,0 +1,12 @@
+{
+  "name": "k8s",
+  "version": "1.0.0",
+  "description": "project about lessons of fullcycle's course on kubernetes module",
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "dev:start": "node src/index.mjs"
+  },
+  "author": "reginaldo.andrade",
+  "license": "MIT"
+}
