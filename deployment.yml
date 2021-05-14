@@ -17,18 +17,9 @@ spec:
     spec:
       containers:
         - name: nodeserver
-          image: andradereginaldo/node_k8s:1.2.1
+          image: andradereginaldo/node_k8s:2
           envFrom:
             - configMapRef:
                 name: nodeserver-env
-          # env:
-          #   - name: NAME
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: nodeserver-env
-          #         key: NAME
-          #   - name: AGE
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: nodeserver-env
-          #         key: AGE
+            - secretRef:
+                name: nodeserver-secret
