@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
   name: nodeserver
   labels:
@@ -17,4 +17,4 @@ spec:
     spec:
       containers:
         - name: nodeserver
-          image: andradereginaldo/node_k8s
+          image: andradereginaldo/node_k8s:1.1
