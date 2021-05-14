@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeserver
+  labels:
+    app: nodeserver
+spec:
+  selector:
+    matchLabels:
+      app: nodeserver
+  replicas: 2
+  template:
+    metadata:
+      name: nodeserver
+      labels:
+        app: nodeserver
+    spec:
+      containers:
+        - name: nodeserver
+          image: andradereginaldo/node_k8s:1.1
