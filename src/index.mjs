@@ -8,6 +8,7 @@ const server = http.createServer((_, res) => {
   res.statusCode = 200;
 
   res.end(JSON.stringify({
+    message: 'nodejs_k8s',
     alive: true
   }));
 });
