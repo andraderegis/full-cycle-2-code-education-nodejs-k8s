@@ -1,16 +1,32 @@
 import http from 'http';
 
-const SERVER_PORT = 4000;
+import { SERVER_PORT } from './constants.mjs';
+import { routes } from './routes.mjs';
 
-const server = http.createServer((_, res) => {
-  res.setHeader('Content-Type', 'application/json');
+const server = http.createServer(async (req, res) => {
+  try {
+    const route = routes.get(req.url);
 
-  res.statusCode = 200;
+    if (!route) {
+      res.statusCode = 500;
+      res.end(JSON.stringify({
+        error: `Unknown route ${req.url}`
+      }));
 
-  res.end(JSON.stringify({
-    message: 'nodejs_k8s',
-    alive: true
-  }));
+      return;
+    }
+
+    const result = await route();
+
+    res.setHeader('Content-Type', 'application/json');
+    res.statusCode = 200;
+    res.end(JSON.stringify(result));
+  } catch (err) {
+    res.statusCode = 500;
+    res.end(JSON.stringify({
+      error: err.message
+    }));
+  }
 });
 
 server.listen(SERVER_PORT, () => {
