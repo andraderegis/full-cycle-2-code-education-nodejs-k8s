@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeserver
+  labels:
+    app: nodeserver
+spec:
+  selector:
+    matchLabels:
+      app: nodeserver
+  replicas: 2
+  template:
+    metadata:
+      name: nodeserver
+      labels:
+        app: nodeserver
+    spec:
+      containers:
+        - name: nodeserver
+          image: andradereginaldo/node_k8s:3.1
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 4000
+            periodSeconds: 3
+            failureThreshold: 1
+            initialDelaySeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 4000
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+            initialDelaySeconds: 15
+          envFrom:
+            - configMapRef:
+                name: nodeserver-env
+            - secretRef:
+                name: nodeserver-secret
