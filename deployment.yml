@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: nodeserver
-          image: andradereginaldo/node_k8s:2
+          image: andradereginaldo/node_k8s:3
           envFrom:
             - configMapRef:
                 name: nodeserver-env

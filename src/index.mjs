@@ -1,31 +1,32 @@
 import http from 'http';
 
-const SERVER_PORT = 4000;
+import { SERVER_PORT } from './constants.mjs';
+import { routes } from './routes.mjs';
 
-const server = http.createServer((_, res) => {
-  let message = 'nodejs_k8s';
-  let user = {};
+const server = http.createServer(async (req, res) => {
+  try {
+    const route = routes.get(req.url);
 
-  if (process.env.NAME && process.env.AGE) {
-    message = message.concat(`- I'm ${process.env.NAME}. I'm ${process.env.AGE} years old.`);
-  }
+    if (!route) {
+      res.statusCode = 500;
+      res.end(JSON.stringify({
+        error: `Unknown route ${req.url}`
+      }));
 
-  if (process.env.USER && process.env.EMAIL) {
-    user = {
-      username: process.env.USER,
-      email: process.env.EMAIL
+      return;
     }
+
+    const result = await route();
+
+    res.setHeader('Content-Type', 'application/json');
+    res.statusCode = 200;
+    res.end(JSON.stringify(result));
+  } catch (err) {
+    res.statusCode = 500;
+    res.end(JSON.stringify({
+      error: err.message
+    }));
   }
-
-  res.setHeader('Content-Type', 'application/json');
-
-  res.statusCode = 200;
-
-  res.end(JSON.stringify({
-    user,
-    message,
-    alive: true
-  }));
 });
 
 server.listen(SERVER_PORT, () => {
