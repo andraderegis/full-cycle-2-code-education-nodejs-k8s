@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: nodeserver
-          image: andradereginaldo/node_k8s:3.1
+          image: andradereginaldo/node_k8s:3.2
 
           startupProbe:
             httpGet:
@@ -57,3 +57,12 @@ spec:
                 name: nodeserver-env
             - secretRef:
                 name: nodeserver-secret
+
+          volumeMounts:
+            - mountPath: "/nodeserver/volume"
+              name: nodeserver-volume
+
+      volumes:
+        - name: nodeserver-volume
+          persistentVolumeClaim:
+            claimName: nodeserver-pvc
