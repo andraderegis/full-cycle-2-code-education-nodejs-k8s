@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: nodeserver
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       name: nodeserver
@@ -18,13 +18,23 @@ spec:
       containers:
         - name: nodeserver
           image: andradereginaldo/node_k8s:3.1
-          resources:
-            requests:
-              cpu: 250m
-              memory: 100Mi
-            limits:
-              cpu: 500m
-              memory: 150Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 4000
+            periodSeconds: 3
+            failureThreshold: 1
+            initialDelaySeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 4000
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+            initialDelaySeconds: 15
           envFrom:
             - configMapRef:
                 name: nodeserver-env
