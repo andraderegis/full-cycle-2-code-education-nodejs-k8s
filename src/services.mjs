@@ -17,9 +17,9 @@ const healthz = async () => {
     throw new Error(`Application does not ready at ${duration.getSeconds()} seconds`);
   }
 
-  if (duration.getSeconds() > 30) {
-    throw new Error(`Duration ${duration.getSeconds()} exceeded 30 seconds`);
-  }
+  // if (duration.getSeconds() > 30) {
+  //   throw new Error(`Duration ${duration.getSeconds()} exceeded 30 seconds`);
+  // }
 
   // if (duration.getSeconds() > 25) {
   //   throw new Error(`Duration ${duration.getSeconds()} exceeded 25 seconds`);
