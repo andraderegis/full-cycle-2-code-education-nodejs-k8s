@@ -15,6 +15,7 @@ spec:
       labels:
         app: nodeserver
     spec:
+      serviceAccount: nodeserver
       containers:
         - name: nodeserver
           image: andradereginaldo/node_k8s:3.2
