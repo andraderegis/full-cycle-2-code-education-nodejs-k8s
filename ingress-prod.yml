@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-fullcycle-prod
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    #força o redirecionamento para https caso o acesso ocorra via http
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/default-backend: "nodeserver-service"
+spec:
+  rules:
+    - host: ingress-fullcycle.rnva.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nodeserver-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - ingress-fullcycle.rnva.dev
+      secretName: ingress-fullcycle-tls
